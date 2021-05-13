@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        position: relative;
+        display: block;
+        margin: 0 auto;
+      }
+      table,
+      td,
+      tr {
+        border: 1px solid black;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 660px;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" name="" id="inputBox" />
+    <button type="button" id="addBtn" onclick="addFun()">ADD DATA</button>
+    <button
+      type="button"
+      id="updateBtn"
+      style="display: none"
+      onclick="update()"
+    >
+      UPDATE
+    </button>
+    <button type="button" onclick="deleteAllData()">DELETE ALL DATA</button>
+    <main>
+      <table class="table"></table>
+    </main>
+    <script>
+      let inputBox = document.querySelector("#inputBox");
+      let updateBtn = document.querySelector("#updateBtn");
+      let dataArray = [];
+      let table = document.querySelector("table");
+      let addBtn = document.querySelector("#addBtn");
+      let temp;
+      const addFun = () => {
+        dataArray.push(inputBox.value);
+        showOutput(dataArray);
+        inputBox.value = "";
+      };
+      const deleteData = (e) => {
+        dataArray.splice(e, 1);
+        showOutput(dataArray);
+      };
+      const deleteAllData = () => {
+        dataArray.splice(0, dataArray.length);
+        showOutput(dataArray);
+      };
+      //
+      const editEntry = (e) => {
+        temp = e;
+        addBtn.style.display = "none";
+        updateBtn.style.display = "block";
+        inputBox.value = dataArray[e];
+      };
+      const update = () => {
+        dataArray.splice(temp, 1);
+        dataArray.splice(temp, 0, inputBox.value);
+        addBtn.style.display = "block";
+        updateBtn.style.display = "none";
+        showOutput(dataArray);
+        inputBox.value = "";
+      };
+
+      const showOutput = (arr) => {
+        let tr = "";
+        for (let i = 0; i < arr.length; i++) {
+          tr += `<tr>
+                    <td>${arr[i]}</td>
+                    <td>
+                      <button onclick="editEntry(${i})">Edit</button>
+                    </td>
+                    <td>
+                      <button onclick="deleteData(${i})">Delete</button>
+                    </td>
+                  </tr>`;
+        }
+        table.innerHTML = tr;
+      };
+    </script>
+  </body>
+</html>
